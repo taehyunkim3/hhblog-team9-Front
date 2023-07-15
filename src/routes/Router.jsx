@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "../pages/Home";
-import CreateDesk from "../pages/CreateDesk";
-import DeskDetail from "../pages/DeskDetail";
-import NotFound from "../pages/NotFound";
-import Room from "../pages/Room";
+import Home from "../pages/Home/Home";
+import CreateDesk from "../pages/CreateDesk/CreateDesk";
+import DeskDetail from "../pages/DeskDetail/DeskDetail";
+import NotFound from "../pages/NotFound/NotFound";
+import Room from "../pages/Room/Room";
 
 const Router = () => {
   return (
