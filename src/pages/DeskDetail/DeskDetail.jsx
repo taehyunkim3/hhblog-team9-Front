@@ -1,16 +1,15 @@
 import React from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import { useNavigate, useParams } from "react-router-dom";
-import { styled } from "styled-components";
+
 import { initialState as mockDB } from "../../db/deskDB";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import backgroundImage from "../../lib/img/deckdark.png";
+
 import {
   StDeskDetailBg,
   StDeskDetailBody,
   StHoverShadow,
 } from "./DeskDetailStyle";
-import Desk1Svg from "../../components/Desks/Desk1Svg";
 
 const DeskDetail = () => {
   const { id } = useParams();
