@@ -1,8 +1,8 @@
 import NavBar from "../../components/NavBar/NavBar";
 
 import { StCreateDesk } from "../CreateDesk/CreateDeskStyle";
-import { useState } from "react";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { postSignUp } from "../../services/api";
 import { queryClient } from "../../routes/Router";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,8 @@ const initialInput = {
 };
 
 const idRegExp = /^[a-z0-9]{4,15}$/;
-const passwordRegExp = /(?=.*\d)(?=.*[a-z][A-Z])(?=.*!@#).{4,15}/;
+// const passwordRegExp = /(?=.*\d)(?=.*[a-z][A-Z])(?=.*!@#).{4,15}/;
+const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#]).{4,15}/;
 const nameRegExp = /^[가-힣]{2,6}$/;
 const emailRegExp = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
 
@@ -29,6 +30,8 @@ const Register = () => {
   const [wrongId, setWrongId] = useState(false);
   const [wrongName, setWrongName] = useState(false);
   const [wrongEmail, setWrongEmail] = useState(false);
+  const [submitForm, setSubmitForm] = useState(false); //화면 나갈때 붉은글씨 방지
+  const [loading, setLoading] = useState(false);
 
   const mutation = useMutation({
     mutationFn: postSignUp,
@@ -37,7 +40,13 @@ const Register = () => {
       navigate("/login");
     },
     onError: (error) => {
-      alert(error);
+      if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+        alert(
+          "사이트 백앤드 서버와 통신이 어려운것 같아요. 관리자에게 문의해주세요!"
+        );
+      } else {
+        alert(error);
+      }
     },
   });
 
@@ -57,6 +66,7 @@ const Register = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
     if (input.userPassword !== input.verifyPassword) {
       setNoMatchPassword(true);
     }
@@ -85,15 +95,30 @@ const Register = () => {
       input.name &&
       input.email
     ) {
+      setSubmitForm(true);
+    }
+  };
+
+  useEffect(() => {
+    if (submitForm) {
+      setLoading(true);
       mutation.mutate({
         userId: input.userId,
         userPassword: input.userPassword,
         name: input.name,
         email: input.email,
       });
+      setSubmitForm(false);
       setInput(initialInput);
     }
-  };
+  }, [
+    // input.email,
+    // input.name,
+    // input.userId,
+    // input.userPassword,
+    // mutation,
+    submitForm,
+  ]);
 
   return (
     <>
@@ -150,7 +175,7 @@ const Register = () => {
             onChange={onChangeHandler}
             placeholder="이메일"
           />
-          <button type="submit">입력완료</button>
+          <button type="submit">{loading ? "제출중" : "입력완료"}</button>
         </form>
       </StCreateDesk>
     </>
