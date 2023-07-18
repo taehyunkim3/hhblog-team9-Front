@@ -15,7 +15,6 @@ const StDesk = styled.div`
   align-items: center;
 
   cursor: pointer;
-
   transition: all 0.1s ease-in-out;
   &:hover {
     background-color: rgba(100, 100, 100, 0.7);
