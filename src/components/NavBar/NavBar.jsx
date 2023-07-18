@@ -6,8 +6,10 @@ import { FaPenRuler } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogout } from "../../redux/reducers/userInfo";
+import { userLogin, userLogout } from "../../redux/reducers/userInfo";
 import { queryClient } from "../../routes/Router";
+import { getMyInfo } from "../../services/api";
+import { useQuery } from "@tanstack/react-query";
 const StNavBar = styled.div`
   height: 6rem;
   width: 100%;
@@ -46,6 +48,7 @@ const NavBar = ({
   // isLogin = false,
   // userInfo = { userId: "", userName: "", deskId: null },
 }) => {
+  const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const { isLogin, userId, userName, deskId } = useSelector(
     (state) => state.userInfo
@@ -61,6 +64,35 @@ const NavBar = ({
     navigate("/login");
     queryClient.refetchQueries("user");
   };
+  const { isLoading: userLoading, isError: userError } = useQuery(
+    ["user"],
+    () => getMyInfo(token),
+    {
+      enabled: !!token,
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        dispatch(userLogin(data));
+      },
+      onError: (error) => {
+        console.log(error);
+
+        if (error.message === "Token expired") {
+          // 로컬스토리지 토큰 삭제
+          localStorage.removeItem("token");
+          // 로그인 페이지로 이동
+          dispatch(userLogout());
+
+          navigate("/login");
+        } else {
+          dispatch(userLogout());
+        }
+      },
+      retry: (failureCount, error) => {
+        return false;
+      },
+    }
+  );
+  //
 
   return (
     <StNavBar position={position}>

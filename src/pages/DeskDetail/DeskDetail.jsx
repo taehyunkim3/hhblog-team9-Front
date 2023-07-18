@@ -42,7 +42,8 @@ const DeskDetail = () => {
         <AiOutlineArrowRight className="arrow" />
         <StHoverShadow
           position={"right"}
-          onClick={() => navigate(`/deskdetail/${deskId}/room`)}
+          onClick={() => alert("구현 준비중 입니다.")}
+          // onClick={() => navigate(`/deskdetail/${deskId}/room`)}
         />
       </StDeskDetailBody>
     </StDeskDetailBg>

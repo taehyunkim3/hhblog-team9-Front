@@ -27,35 +27,35 @@ const Home = () => {
   });
   //
 
-  const { isLoading: userLoading, isError: userError } = useQuery(
-    ["user"],
-    () => getMyInfo(token),
-    {
-      enabled: !!token,
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        dispatch(userLogin(data));
-      },
-      onError: (error) => {
-        console.log(error);
+  // const { isLoading: userLoading, isError: userError } = useQuery(
+  //   ["user"],
+  //   () => getMyInfo(token),
+  //   {
+  //     enabled: !!token,
+  //     refetchOnWindowFocus: false,
+  //     onSuccess: (data) => {
+  //       dispatch(userLogin(data));
+  //     },
+  //     onError: (error) => {
+  //       console.log(error);
 
-        if (error.message === "Token expired") {
-          // 로컬스토리지 토큰 삭제
-          localStorage.removeItem("token");
-          // 로그인 페이지로 이동
-          dispatch(userLogout());
+  //       if (error.message === "Token expired") {
+  //         // 로컬스토리지 토큰 삭제
+  //         localStorage.removeItem("token");
+  //         // 로그인 페이지로 이동
+  //         dispatch(userLogout());
 
-          navigate("/login");
-        } else {
-          dispatch(userLogout());
-        }
-      },
-      retry: (failureCount, error) => {
-        return false;
-      },
-    }
-  );
-  //
+  //         navigate("/login");
+  //       } else {
+  //         dispatch(userLogout());
+  //       }
+  //     },
+  //     retry: (failureCount, error) => {
+  //       return false;
+  //     },
+  //   }
+  // );
+  // //
 
   return (
     <StHome>

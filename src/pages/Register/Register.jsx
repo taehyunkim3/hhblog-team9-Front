@@ -17,7 +17,7 @@ const initialInput = {
 
 const idRegExp = /^[a-z0-9]{4,15}$/;
 // const passwordRegExp = /(?=.*\d)(?=.*[a-z][A-Z])(?=.*!@#).{4,15}/;
-const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#]).{4,15}/;
+const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#]).{8,15}/;
 const nameRegExp = /^[가-힣]{2,6}$/;
 const emailRegExp = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
 
@@ -139,7 +139,7 @@ const Register = () => {
           />
           {wrongPassword && (
             <p>
-              비밀번호는 영문 + 숫자 + !@# 를 조합한 4~15자리로 가능합니다. (ex:
+              비밀번호는 영문 + 숫자 + !@# 를 조합한 8~15자리로 가능합니다. (ex:
               1@#ab)
             </p>
           )}
