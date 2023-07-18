@@ -7,10 +7,8 @@ import { getDesks, postDesk } from "../../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 
 import imageCompression from "browser-image-compression";
-import { S3 } from "aws-sdk";
-// import dotenv from "dotenv";
-// dotenv.config();
-
+// import { S3 } from "aws-sdk";
+import S3upload from "react-aws-s3";
 const initialInput = {
   name: "",
   description: "",
@@ -25,27 +23,35 @@ const CreateDesk = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const fileUpload = useRef();
 
-  const s3 = new S3({
+  // const s3 = new S3({
+  //   accessKeyId: process.env.REACT_APP_BLOG_IMG_ACCESS_KEY,
+  //   secretAccessKey: process.env.REACT_APP_BLOG_IMG_SECRET_KEY,
+  //   region: process.env.REACT_APP_BLOG_IMG_REGION,
+  // });
+
+  // async function uploadFileToS3(file, fileName) {
+  //   const uploadParams = {
+  //     Bucket: process.env.REACT_APP_BLOG_IMG_NAME,
+  //     Key: fileName,
+  //     Body: file,
+  //     ACL: "public-read", // if you want the file to be publicly accessible
+  //   };
+
+  //   try {
+  //     const data = await s3.upload(uploadParams).promise();
+  //     return data.Location; // returns url of uploaded file
+  //   } catch (error) {
+  //     console.error("S3 upload error: ", error);
+  //   }
+  // }
+  window.Buffer = window.Buffer || require("buffer").Buffer;
+  const config = {
+    bucketName: process.env.REACT_APP_BLOG_IMG_NAME,
+    region: process.env.REACT_APP_BLOG_IMG_REGION,
     accessKeyId: process.env.REACT_APP_BLOG_IMG_ACCESS_KEY,
     secretAccessKey: process.env.REACT_APP_BLOG_IMG_SECRET_KEY,
-    region: process.env.REACT_APP_BLOG_IMG_REGION,
-  });
-
-  async function uploadFileToS3(file, fileName) {
-    const uploadParams = {
-      Bucket: process.env.REACT_APP_BLOG_IMG_NAME,
-      Key: fileName,
-      Body: file,
-      ACL: "public-read", // if you want the file to be publicly accessible
-    };
-
-    try {
-      const data = await s3.upload(uploadParams).promise();
-      return data.Location; // returns url of uploaded file
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  };
+  const ReactS3Client = new S3upload(config);
 
   // 이미지 압축 옵션
   const options = {
@@ -70,19 +76,41 @@ const CreateDesk = () => {
       const file = fileUpload.current.files[0];
       const newFileName = fileUpload.current.files[0].name;
 
-      const imgUrl = await uploadFileToS3(file, newFileName);
-      if (imgUrl) {
-        setInput({ ...input, deskImg: imgUrl });
-        setIsAlert(false);
-        mutation.mutate(input);
-        setInput(initialInput);
-      } else {
-        window.alert("사진 업로드에 오류가 있어요! 관리자에게 문의해주세요.");
-      }
+      ReactS3Client.uploadFile(file, newFileName).then((data) => {
+        if (data.status === 204) {
+          let imgUrl = data.location;
+          setInput({ ...input, deskImg: imgUrl });
+          setIsAlert(false);
+          mutation.mutate(input);
+          setInput(initialInput);
+        } else {
+          window.alert("사진 업로드에 오류가 있어요! 관리자에게 문의해주세요.");
+        }
+      });
     } else {
       setIsAlert(true);
     }
   };
+
+  // const onSubmitHandler = async (e) => {
+  //   e.preventDefault();
+  //   if (input.name && input.description && fileUpload.current.files[0]) {
+  //     const file = fileUpload.current.files[0];
+  //     const newFileName = fileUpload.current.files[0].name;
+
+  //     const imgUrl = await uploadFileToS3(file, newFileName);
+  //     if (imgUrl) {
+  //       setInput({ ...input, deskImg: imgUrl });
+  //       setIsAlert(false);
+  //       mutation.mutate(input);
+  //       setInput(initialInput);
+  //     } else {
+  //       window.alert("사진 업로드에 오류가 있어요! 관리자에게 문의해주세요.");
+  //     }
+  //   } else {
+  //     setIsAlert(true);
+  //   }
+  // };
 
   console.log(params.deskId);
   useQuery(["desks"], getDesks, {
@@ -160,11 +188,9 @@ const CreateDesk = () => {
           )}
 
           <button type="submit">
-            {" "}
             {isAlert ? " 모든 항목을 입력해주세요." : "Create!"}
           </button>
         </form>
-        {/* other code as is */}
       </StCreateDesk>
     </>
   );
