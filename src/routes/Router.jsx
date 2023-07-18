@@ -6,7 +6,15 @@ import NotFound from "../pages/NotFound/NotFound";
 import Room from "../pages/Room/Room";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import { QueryClient } from "@tanstack/react-query";
 
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 const Router = () => {
   return (
     <BrowserRouter>

@@ -4,7 +4,7 @@ import { StCreateDesk } from "../CreateDesk/CreateDeskStyle";
 import { useState } from "react";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { postSignUp } from "../../services/api";
-
+import { queryClient } from "../../routes/Router";
 import { useNavigate } from "react-router-dom";
 
 const initialInput = {
@@ -29,13 +29,6 @@ const Register = () => {
   const [wrongId, setWrongId] = useState(false);
   const [wrongName, setWrongName] = useState(false);
   const [wrongEmail, setWrongEmail] = useState(false);
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
-    },
-  });
 
   const mutation = useMutation({
     mutationFn: postSignUp,

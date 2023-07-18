@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../redux/reducers/userInfo";
-import { QueryClient } from "@tanstack/react-query";
+import { queryClient } from "../../routes/Router";
 const StNavBar = styled.div`
   height: 6rem;
   width: 100%;
@@ -59,7 +59,7 @@ const NavBar = ({
     localStorage.removeItem("token");
     dispatch(userLogout());
     navigate("/login");
-    QueryClient.refetchQueries("user");
+    queryClient.refetchQueries("user");
   };
 
   return (

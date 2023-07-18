@@ -32,7 +32,7 @@ const Home = () => {
     () => getMyInfo(token),
     {
       enabled: !!token,
-      staleTime: 60 * 1000 * 20, // 20분, default >> 0
+      refetchOnWindowFocus: false,
       onSuccess: (data) => {
         dispatch(userLogin(data));
       },

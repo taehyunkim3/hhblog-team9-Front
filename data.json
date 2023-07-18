@@ -109,6 +109,11 @@
     "deskId": "11"
   },
   "login": {
-    "token": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0aWQxIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2ODkzMzQyMTAsImlhdCI6MTY4OTMzMDYxMH0.S2qXzcpitTylBG0Dmo8Tcl6cbTtqaDRSyFfzX2FXEKM"
+    "token": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0aWQxIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE2ODkzMzQyMTAsImlhdCI6MTY4OTMzMDYxMH0.S2qXzcpitTylBG0Dmo8Tcl6cbTtqaDRSyFfzX2FXEKM",
+    "user": {
+      "userId": "testId",
+      "userName": "홍길동",
+      "deskId": 1
+    }
   }
 }

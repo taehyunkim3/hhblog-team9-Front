@@ -6,31 +6,33 @@ import { useState } from "react";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { postLogIn } from "../../services/api";
 import { useNavigate } from "react-router-dom";
-
+import { queryClient } from "../../routes/Router";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../../redux/reducers/userInfo";
 const initialInput = {
   userId: "",
   userPassword: "",
 };
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [input, setInput] = useState(initialInput);
   const [isNoId, setNoIsId] = useState(false);
   const [isNoPassword, setIsNoPassword] = useState(false);
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
-    },
-  });
 
   const mutation = useMutation({
     mutationFn: postLogIn,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["login"] });
-      localStorage.setItem("token", data);
-      console.log(data);
-      navigate("/");
+      console.log(data.token);
+      if (data.user) {
+        dispatch(userLogin(data.user));
+        localStorage.setItem("token", data.token);
+        console.log(data);
+        navigate("/");
+      } else {
+        alert("No user data received from the server.");
+      }
     },
     onError: (error) => {
       alert(error);

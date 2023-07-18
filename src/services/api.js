@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:4000";
-// const baseUrl = "http://13.125.230.125:8080/api";
+// const baseUrl = "http://localhost:4000";
+const baseUrl = "https://hanggublog.shop:8080/api";
 
 
 export const getDesks = async () => { // 목록
@@ -10,14 +10,14 @@ export const getDesks = async () => { // 목록
     return data;
 }
 
-export const getDeskDetail = async (id) => { // 상세 JSOJSONSERVER용
-    const { data } = await axios.get(`${baseUrl}/11`);
-    return data[0];
-}
-// export const getDeskDetail = async (id) => { // 상세
-//     const { data } = await axios.get(`${baseUrl}/desks/${id}`);
-//     return data;
+// export const getDeskDetail = async (id) => { // 상세 JSOJSONSERVER용
+//     const { data } = await axios.get(`${baseUrl}/11`);
+//     return data[0];
 // }
+export const getDeskDetail = async (id) => { // 상세
+    const { data } = await axios.get(`${baseUrl}/desks/${id}`);
+    return data;
+}
 
 export const postDesk = async ({ token, desk }) => { // 책상생성 fix
     const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
@@ -42,17 +42,17 @@ export const postSignUp = async (user) => { // 회원가입
     return data;
 }
 
-// export const postLogIn = async (user) => { // 로그인
-//     const { data } = await axios.post(`${baseUrl}/auth/login`, user);
-//     return data;
-// }
-export const postLogIn = async (user) => { // 로그인 JSONSERVER용
-    const { data } = await axios.get(`${baseUrl}/login`, user);
-    console.log(data);
+export const postLogIn = async (user) => { // 로그인
+    const { data } = await axios.post(`${baseUrl}/auth/login`, user);
     const result = await data.token.substring(6);
-
     return result;
 }
+// export const postLogIn = async (user) => { // 로그인 JSONSERVER용
+//     const { data } = await axios.get(`${baseUrl}/login`, user);
+//     console.log(data);
+//     const result = await data.token.substring(6);
+//     return { 'token': result, user: data.user };
+// }
 
 export const postSignOut = async (token) => { // 로그아웃
     const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
@@ -60,16 +60,16 @@ export const postSignOut = async (token) => { // 로그아웃
     return data;
 }
 
-export const getMyInfo = async (token) => { //JSONSERVER용
-    console.log(token + '토큰');
-    const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
-    const { data } = await axios.get(`${baseUrl}/user`, sentToken);
-    return data;
-}
-// export const getMyInfo = async (token) => { // 내 정보fix
+// export const getMyInfo = async (token) => { //JSONSERVER용
 //     console.log(token + '토큰');
 //     const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
-//     const { data } = await axios.get(`${baseUrl}/desk/user`, sentToken);
+//     const { data } = await axios.get(`${baseUrl}/user`, sentToken);
 //     return data;
 // }
+export const getMyInfo = async (token) => { // 내 정보fix
+    console.log(token + '토큰');
+    const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
+    const { data } = await axios.get(`${baseUrl}/desks/user`, sentToken);
+    return data;
+}
 
