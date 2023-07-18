@@ -6,11 +6,11 @@ on:
   push: # 적용될 액션
     branches: main # 적용될 브랜치
     paths:
-      - 'frontend/**' # workflow에서 적용될 path
+      - "/**" # workflow에서 적용될 path
 
 defaults:
   run:
-    working-directory: ./frontend # workflow에서 default working directory
+    working-directory: ./ # workflow에서 default working directory
 
 jobs:
   deploy:
@@ -20,13 +20,13 @@ jobs:
         uses: actions/checkout@v2 # 워크플로에서 액세스할 수 있도록 에서 저장소를 체크아웃
 
       - name: Install Dependencies
-        run: yarn
+        run: yarn install
 
       - name: Build
         run: yarn build
 
       - name: S3 Deploy
-        run: aws s3 sync ./dist s3://hgblog/ --acl bucket-owner-full-control # s3 이름 2021-cvi-dev
+        run: aws s3 sync ./build s3://hgblog/ --profile=newtaehyun #--acl bucket-owner-full-control # s3 이름 2021-cvi-dev
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
