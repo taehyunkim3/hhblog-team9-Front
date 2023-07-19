@@ -10,6 +10,7 @@ import {
 } from "./DeskDetailStyle";
 import { getDeskDetail } from "../../services/api";
 import { useQuery } from "@tanstack/react-query";
+import MonitorSvg from "../../components/Monitor/MonitorSvg";
 
 const DeskDetail = () => {
   const { id } = useParams();
@@ -22,6 +23,7 @@ const DeskDetail = () => {
   const deskId = data && data.deskId;
   const name = data && data.name;
   const deskImg = data && data.deskImg;
+  const description = data && data.description;
   if (isLoading) return "Loading...";
   if (isError) return `An error has occurred: ${error.message}`;
   console.log(data);
@@ -34,10 +36,11 @@ const DeskDetail = () => {
 
         <h2>교실로</h2>
         <div>
-          <p>?</p>
-          <img src={deskImg}></img>
-          <p>{name}</p>
+          <h2>{name}님의 책상입니다.</h2>
+          <MonitorSvg IMAGEURL={deskImg} width="70vw" height="70vh" />
+          <p>{description}</p>
         </div>
+
         <h2>{name}님의 방으로</h2>
         <AiOutlineArrowRight className="arrow" />
         <StHoverShadow

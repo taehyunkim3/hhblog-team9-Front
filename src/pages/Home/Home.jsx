@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin, userLogout } from "../../redux/reducers/userInfo";
+import Desk2Svg from "../../components/Desks/Desk2Svg";
 
 const Home = () => {
   const token = localStorage.getItem("token");
