@@ -97,7 +97,7 @@ const NavBar = ({
   return (
     <StNavBar position={position}>
       <h1 onClick={() => navigate("/")}>항구LOG</h1>
-      <p>99일 우리들의 항해 기록 ver.0.8</p>
+      <p>99일 우리들의 항해 기록 ver.0.9</p>
 
       {page === "home" && <DeskPostSelector />}
       {page === "home" &&

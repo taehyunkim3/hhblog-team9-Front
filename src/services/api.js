@@ -1,7 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 // const baseUrl = "http://localhost:4000";
-const baseUrl = "https://hanggublog.shop:8080/api";
+const baseUrl = "https://hangublog.store/api";
 
 
 export const getDesks = async () => { // 목록
@@ -19,9 +21,63 @@ export const getDeskDetail = async (id) => { // 상세
     return data;
 }
 
-export const postDesk = async ({ token, desk }) => { // 책상생성 fix
-    const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
-    const { data } = await axios.post(`${baseUrl}/desks`, desk, sentToken);
+// export const postDesk = async ({ token, desk }) => { // 책상생성 fix
+//     const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
+//     const { data } = await axios.post(`${baseUrl}/desks`, desk, sentToken);
+//     return data;
+// }
+//아래는 ㅣㅈ울것
+// const initialInput = {
+//     name: "",
+//     description: "",
+//     deskImg: "",
+//   };
+export const postDesk = async ({ post }) => { // 사진전송추가
+    const token = localStorage.getItem("token");
+
+    console.log(post);
+    const { path: profilePath } = await axios({
+        method: "post",
+        url: `${baseUrl}/file`,
+        data: post.profile,
+        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+    });
+    const { path: deskImgPath } = await axios({
+        method: "post",
+        url: `${baseUrl}/file`,
+        data: post.deskImg,
+        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+    });
+    const dataWithUrl = { ...post, "deskImg": deskImgPath, "profile": profilePath }
+    const formedToken = { headers: { "Authorization": `Bearer ${token}` } };
+    const { data } = await axios.post(`${baseUrl}/desks`, dataWithUrl, formedToken);
+    return data;
+}
+
+// export const putModifyDesk = async ({ token, id, desk }) => { // 책상수정 fix
+//     const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
+//     const { data } = await axios.put(`${baseUrl}/desks/${id}`, sentToken, desk);
+//     return data;
+// }
+export const putModifyDesk = async ({ post, deskId }) => { // 사진전송추가 수정기능
+    const token = localStorage.getItem("token");
+
+    console.log(post);
+    const { path: profilePath } = await axios({
+        method: "post",
+        url: `${baseUrl}/file`,
+        data: post.profile,
+        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+    });
+    const { path: deskImgPath } = await axios({
+        method: "post",
+        url: `${baseUrl}/file`,
+        data: post.deskImg,
+        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+    });
+    const dataWithUrl = { ...post, "deskImg": deskImgPath, "profile": profilePath }
+    const formedToken = { headers: { "Authorization": `Bearer ${token}` } };
+    const { data } = await axios.put(`${baseUrl}/desks/${deskId}`, dataWithUrl, formedToken);
     return data;
 }
 
@@ -31,11 +87,7 @@ export const deleteDesk = async ({ token, id }) => { // 책상삭제 fix
     return data;
 }
 
-export const putModifyDesk = async ({ token, id, desk }) => { // 책상수정 fix
-    const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
-    const { data } = await axios.put(`${baseUrl}/desks/${id}`, sentToken, desk);
-    return data;
-}
+
 
 export const postSignUp = async (user) => { // 회원가입
     const { data } = await axios.post(`${baseUrl}/auth/signup`, user);
