@@ -1,7 +1,7 @@
 import NavBar from "../../components/NavBar/NavBar";
 
 import Desk1Svg from "../../components/Desks/Desk1Svg";
-import { StCreateDesk } from "../CreateDesk/CreateDeskStyle";
+import { StCreateDesk } from "./LoginStyle";
 import { useState } from "react";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { postLogIn } from "../../services/api";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { queryClient } from "../../routes/Router";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../../redux/reducers/userInfo";
+import Button from "../../components/Button/Button";
 const initialInput = {
   userId: "",
   userPassword: "",
@@ -70,8 +71,8 @@ const Login = () => {
 
   return (
     <>
-      <NavBar page="create" />
       <StCreateDesk>
+        <NavBar page="create" className="nav" />
         <Desk1Svg></Desk1Svg>
 
         <h1>로그인</h1>
@@ -93,16 +94,16 @@ const Login = () => {
             onChange={onChangeHandler}
             placeholder="password"
           />
+          <Button type="submit">로그인</Button>
 
-          <button type="submit">로그인</button>
-          <button
+          <Button
             type="button"
             onClick={() => {
               onJoinHandler();
             }}
           >
             회원가입
-          </button>
+          </Button>
         </form>
       </StCreateDesk>
     </>

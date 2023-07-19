@@ -1,59 +1,59 @@
-import DeskPostSelector from "../Selector/DeskPostSelector";
-import { CgProfile } from "react-icons/cg";
-import { TbDeviceDesktopPlus } from "react-icons/tb";
-import { FaPenRuler } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { StNavBar } from "./NavBarStyle";
-import useCheckUserInfo from "../../hooks/useCheckUserInfo/useCheckUserInfo";
+// import DeskPostSelector from "../Selector/DeskPostSelector";
+// import { CgProfile } from "react-icons/cg";
+// import { TbDeviceDesktopPlus } from "react-icons/tb";
+// import { FaPenRuler } from "react-icons/fa6";
+// import { useNavigate } from "react-router-dom";
+// import PropTypes from "prop-types";
+// import { useSelector } from "react-redux";
+// import { StNavBar } from "./NavBarStyle";
+// import useCheckUserInfo from "../../hooks/useCheckUserInfo/useCheckUserInfo";
 
-import useLogoutHandler from "../../hooks/useLogoutHandler/useLogoutHandler";
-import React from "react";
+// import useLogoutHandler from "../../hooks/useLogoutHandler/useLogoutHandler";
+// import React from "react";
 
-const NavBar = ({ page = "home", position = "static" }) => {
-  const token = localStorage.getItem("token");
-  const { isLogin, userName, deskId } = useSelector((state) => state.userInfo);
-  const navigate = useNavigate();
-  const onProfileClickHandler = () => {
-    navigate("/login");
-  };
-  const logoutHandler = useLogoutHandler();
+// const NavBar = ({ page = "home", position = "static" }) => {
+//   const token = localStorage.getItem("token");
+//   const { isLogin, userName, deskId } = useSelector((state) => state.userInfo);
+//   const navigate = useNavigate();
+//   const onProfileClickHandler = () => {
+//     navigate("/login");
+//   };
+//   const logoutHandler = useLogoutHandler();
 
-  useCheckUserInfo(token);
+//   useCheckUserInfo(token);
 
-  return (
-    <StNavBar position={position}>
-      <h1 onClick={() => navigate("/")}>항구LOG</h1>
-      <p>99일 우리들의 항해 기록 ver.0.9.3</p>
+//   return (
+//     <StNavBar position={position}>
+//       <h1 onClick={() => navigate("/")}>항구LOG</h1>
+//       <p>99일 우리들의 항해 기록 ver.0.9.3</p>
 
-      {page === "home" && <DeskPostSelector />}
-      {page === "home" &&
-        (isLogin ? (
-          deskId === null ? (
-            <TbDeviceDesktopPlus
-              className="addTable"
-              onClick={() => navigate("/createdesk")}
-            />
-          ) : (
-            <FaPenRuler
-              className="addTable"
-              onClick={() => navigate(`/createdesk?deskId=${deskId}`)}
-            />
-          )
-        ) : null)}
-      {page === "deskdetail" && <p>deskDetailNav</p>}
-      {isLogin && <p>{userName}님 반갑습니다.</p>}
-      {isLogin ? (
-        <button onClick={logoutHandler}>로그아웃</button>
-      ) : (
-        <CgProfile className="profile" onClick={onProfileClickHandler} />
-      )}
-    </StNavBar>
-  );
-};
-NavBar.propTypes = {
-  page: PropTypes.string,
-  position: PropTypes.string,
-};
-export default NavBar;
+//       {page === "home" && <DeskPostSelector />}
+//       {page === "home" &&
+//         (isLogin ? (
+//           deskId === null ? (
+//             <TbDeviceDesktopPlus
+//               className="addTable"
+//               onClick={() => navigate("/createdesk")}
+//             />
+//           ) : (
+//             <FaPenRuler
+//               className="addTable"
+//               onClick={() => navigate(`/createdesk?deskId=${deskId}`)}
+//             />
+//           )
+//         ) : null)}
+//       {page === "deskdetail" && <p>deskDetailNav</p>}
+//       {isLogin && <p>{userName}님 반갑습니다.</p>}
+//       {isLogin ? (
+//         <button onClick={logoutHandler}>로그아웃</button>
+//       ) : (
+//         <CgProfile className="profile" onClick={onProfileClickHandler} />
+//       )}
+//     </StNavBar>
+//   );
+// };
+// NavBar.propTypes = {
+//   page: PropTypes.string,
+//   position: PropTypes.string,
+// };
+// export default NavBar;

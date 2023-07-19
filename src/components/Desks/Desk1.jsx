@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Desk1Svg from "./Desk1Svg";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
-import Desk2Svg from "./Desk2Svg";
+import Desk2Svg from "./Desk1Svg";
 
 const StDesk = styled.div`
   height: 13rem;
@@ -62,7 +62,7 @@ const Desk1 = ({ id, image = initialImage, name = "noname" }) => {
       <StName isHovered={isHover} className="name">
         <p>{name}</p>
       </StName>
-      <Desk2Svg
+      <Desk1Svg
         isHovered={isHover}
         width="10rem"
         height="10rem"

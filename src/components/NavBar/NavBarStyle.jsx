@@ -25,10 +25,10 @@ export const StNavBar = styled.div`
     margin-left: auto;
     margin-right: 0;
   }
-  h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: red;
-    cursor: pointer;
-  }
+`;
+export const StTitle = styled.p`
+  font-size: 2rem;
+  font-weight: 700;
+  color: red;
+  cursor: pointer;
 `;

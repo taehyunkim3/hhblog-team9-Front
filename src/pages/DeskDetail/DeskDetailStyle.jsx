@@ -1,12 +1,10 @@
 import { styled } from "styled-components";
-import backgroundImage from "../../lib/img/carpet.jpeg";
+
 export const StDeskDetailBg = styled.div`
-  //   background-image: url(${backgroundImage});
-  //   background-repeat: repeat;
   height: 100vh;
   width: 100%;
   padding-bottom: 130px;
-  // background-image: linear-gradient(to right, #434343 0%, black 100%);
+
   background: rgb(67, 67, 67);
   background: radial-gradient(
     circle,
@@ -22,13 +20,14 @@ export const StDeskDetailBody = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  overflow: hidden;
 
   gap: 1rem;
   color: #ffffff;
   img {
-    max-width: 40vw;
-    max-height: 70vh;
-    // box-shadow: 0px 0px 50px 9px #ffffff;
+    width: 80vw;
+
+    // box-shadow: 0px 0px 50px 9px rgba(200, 200, 200, 0.3);
   }
   p {
     font-size: 2rem;
@@ -42,8 +41,16 @@ export const StDeskDetailBody = styled.div`
     width: 100%;
   }
   .arrow {
-    font-size: 4rem;
-    margin-right: 3rem;
+    color: grey;
+    font-size: 2rem;
+    margin: 3rem;
+    position: absolute;
+  }
+  .right {
+    right: 0;
+  }
+  .left {
+    left: 0;
   }
   h2 {
     font-size: 1.4rem;
@@ -53,6 +60,9 @@ export const StDeskDetailBody = styled.div`
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  h3 {
+    color: grey;
   }
 `;
 
@@ -64,11 +74,9 @@ export const StHoverShadow = styled.div`
   ${(prop) => (prop.position === "right" ? "right:0" : "left: 0")};
   max-width: 20rem;
   background: radial-gradient(ellipse farthest-corner at top ${(prop) =>
-    prop.position === "right" ? "right" : "left"}, ${(prop) =>
-  prop.position === "right"
-    ? "rgba(90,90,90,0.5)"
-    : "rgba(140,140,140,0.3)"} 0%, ${(prop) =>
-  prop.position === "right" ? "rgba(0,0,0,0) " : "rgba(0,0,0,0) "} 60%);
+    prop.position === "right" ? "right" : "left"}, 
+    rgba(140,140,140,0.5) 0%, ${(prop) =>
+      prop.position === "right" ? "rgba(0,0,0,0) " : "rgba(0,0,0,0) "} 60%);
   opacity:0;
   transition: all .5s;
   &:hover { 

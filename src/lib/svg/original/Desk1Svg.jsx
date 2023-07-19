@@ -3,7 +3,7 @@ const st0Style = {
   clipRule: "evenodd",
 };
 
-const Desk2Svg = ({
+const Desk1Svg = ({
   isHovered = false,
   width = "300px",
   height = "300px",
@@ -60,11 +60,12 @@ const Desk2Svg = ({
 			c-2,0-3.9-0.8-5.2-2.2l0,0c-1.3-1.4-2.2-3.2-2.2-5.2V7.4c0-2,0.8-3.9,2.2-5.2l0,0l0,0l0,0l0,0C46.3,0.8,48.2,0,50.2,0L50.2,0z
 			 M219.3,11.5h-165v96.3h165L219.3,11.5L219.3,11.5z"
           />
-          {/* , 309이 램프임 */}
+
           <path
             d="M121.8,107.8h30.1h3.8l1.5,3.6l9.8,23.5l3.3,8h-8.6h-49.7h-8.6l3.3-8l9.8-23.5l1.5-3.6H121.8L121.8,107.8z M148,119.4
 			h-22.4l-5,12H153L148,119.4z"
           />
+          {/* M309 가 램프임 */}
           <path
             d="M309.8,31.8h40.1h3.8l1.5,3.6L375,75.8l3.3,8h-8.6H290h-8.6l3.3-8l19.8-40.5l1.5-3.6L309.8,31.8L309.8,31.8z"
             style={{ fill: lampColor, stroke: lampColor }}
@@ -90,13 +91,13 @@ const Desk2Svg = ({
           preserveAspectRatio="xMidYMid slice"
         />
       </g>
+      {/* M309 가 램프임 */}
       <path
         d="M309.8,31.8h40.1h3.8l1.5,3.6L375,75.8l3.3,8h-8.6H290h-8.6l3.3-8l19.8-40.5l1.5-3.6L309.8,31.8L309.8,31.8z"
         fill={lampColor}
       />
-      {"      // fill is used here "}
     </svg>
   );
 };
 
-export default Desk2Svg;
+export default Desk1Svg;

@@ -34,6 +34,7 @@ export const getDeskDetail = async (id) => { // 상세
 //   };
 export const postDesk = async (post) => { // 사진전송추가
     const token = localStorage.getItem("token");
+    console.log('🐹게시요청');
 
     console.log("postDesk" + JSON.stringify(post.profile));
     const profileExt = post.profile.name.split('.').pop();
@@ -68,32 +69,80 @@ export const postDesk = async (post) => { // 사진전송추가
 //     const { data } = await axios.put(`${baseUrl}/desks/${id}`, sentToken, desk);
 //     return data;
 // }
-export const putModifyDesk = async ({ post, deskId }) => { // 사진전송추가 수정기능
+export const putModifyDesk = async ({ input, deskId }) => {
     const token = localStorage.getItem("token");
+    console.log('🐹수정요청' + deskId);
 
-    console.log(post);
-    const { path: profilePath } = await axios({
-        method: "post",
-        url: `${baseUrl}/file`,
-        data: post.profile,
-        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
-    });
-    const { path: deskImgPath } = await axios({
-        method: "post",
-        url: `${baseUrl}/file`,
-        data: post.deskImg,
-        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
-    });
-    const dataWithUrl = { ...post, deskImg: deskImgPath, profile: profilePath }
+    let profilePath;
+    let deskImgPath;
+
+    if (typeof input.profile === "object") {
+        const profileExt = input.profile.name.split('.').pop();
+        const formProfileData = new FormData();
+        formProfileData.append('file', input.profile, `profile.${profileExt}`)
+        const response = await axios({
+            method: "post",
+            url: `${baseUrl}/file`,
+            data: formProfileData,
+            headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+        });
+        profilePath = response.data.path;
+    } else if (typeof input.profile === "string") {
+        profilePath = input.profile;
+    }
+
+    if (typeof input.deskImg === "object") {
+        const deskImgExt = input.deskImg.name.split('.').pop();
+        const formDeskData = new FormData();
+        formDeskData.append('file', input.deskImg, `desk.${deskImgExt}`)
+        const response = await axios({
+            method: "post",
+            url: `${baseUrl}/file`,
+            data: formDeskData,
+            headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+        });
+        deskImgPath = response.data.path;
+    } else if (typeof input.deskImg === "string") {
+        deskImgPath = input.deskImg;
+    }
+
+    const dataWithUrl = { ...input, deskImg: deskImgPath, profile: profilePath }
     const formedToken = { headers: { "Authorization": `Bearer ${token}` } };
     const { data } = await axios.put(`${baseUrl}/desks/${deskId}`, dataWithUrl, formedToken);
     return data;
 }
+// export const putModifyDesk = async ({ post, deskId }) => { // 사진전송추가 수정기능
+//     const token = localStorage.getItem("token");
+//     console.log('🐹수정요청' + deskId);
 
-export const deleteDesk = async ({ token, id }) => { // 책상삭제 fix
+//     console.log(post);
+//     const { path: profilePath } = await axios({
+//         method: "post",
+//         url: `${baseUrl}/file`,
+//         data: post.profile,
+//         headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+//     });
+//     const { path: deskImgPath } = await axios({
+//         method: "post",
+//         url: `${baseUrl}/file`,
+//         data: post.deskImg,
+//         headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+//     });
+//     const dataWithUrl = { ...post, deskImg: deskImgPath, profile: profilePath }
+//     const formedToken = { headers: { "Authorization": `Bearer ${token}` } };
+//     const { data } = await axios.put(`${baseUrl}/desks/${deskId}`, dataWithUrl, formedToken);
+//     return data;
+// }
+
+export const deleteDesk = async (deskId) => { // 책상삭제 fix
+    const token = localStorage.getItem("token");
+    console.log('🐱' + deskId);
+
     const sentToken = { headers: { "Authorization": `Bearer ${token}` } };
-    const { data } = await axios.delete(`${baseUrl}/desks/${id}`, sentToken);
-    return data;
+    const response = await axios.delete(`${baseUrl}/desks/${deskId}`, sentToken);
+    console.log(JSON.stringify(response));
+    const message = await response.data.msg;
+    return message;
 }
 
 

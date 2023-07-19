@@ -1,7 +1,8 @@
 import NavBar from "../../components/NavBar/NavBar";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { MdOutlineMarkUnreadChatAlt } from "react-icons/md";
+import { TbArrowBackUp } from "react-icons/tb";
 
 import {
   StDeskDetailBg,
@@ -29,23 +30,24 @@ const DeskDetail = () => {
   console.log(data);
   return (
     <StDeskDetailBg>
-      <NavBar page="deskdetail" />
+      <NavBar page="home" />
       <StDeskDetailBody>
         <StHoverShadow position={"left"} onClick={() => navigate(`/`)} />
-        <AiOutlineArrowLeft className="arrow" />
+        <TbArrowBackUp className="arrow left" />
 
-        <h2>교실로</h2>
+        {/* <h2>교실로</h2> */}
         <div>
-          <h2>{name}님의 책상입니다.</h2>
-          <MonitorSvg IMAGEURL={deskImg} width="70vw" height="70vh" />
-          <p>{description}</p>
+          <h3>"{name}님의 책상"</h3>
+
+          <img src={deskImg} alt={`${name}님의 책상 사진입니다.`} />
+          <p>"{description}"</p>
         </div>
 
-        <h2>{name}님의 방으로</h2>
-        <AiOutlineArrowRight className="arrow" />
+        {/* <h2>방으로</h2> */}
+        <MdOutlineMarkUnreadChatAlt className="arrow right" />
         <StHoverShadow
           position={"right"}
-          onClick={() => alert("구현 준비중 입니다.")}
+          onClick={() => alert("구현 준비중 입니다🦊")}
           // onClick={() => navigate(`/deskdetail/${deskId}/room`)}
         />
       </StDeskDetailBody>
