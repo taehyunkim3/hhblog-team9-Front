@@ -30,8 +30,6 @@ const Login = () => {
         localStorage.setItem("token", data);
         console.log(data);
         navigate("/");
-      } else {
-        alert("No user data received from the server.");
       }
     },
     onError: (error) => {

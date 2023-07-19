@@ -60,8 +60,8 @@ const CreateDesk = () => {
   });
   // 이미지 압축 옵션
   const options = {
-    maxSizeMB: 1,
-    maxWidthOrHeight: 720,
+    maxSizeMB: 0.8,
+    maxWidthOrHeight: 1700,
     useWebWorker: true,
   };
 

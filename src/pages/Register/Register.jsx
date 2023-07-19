@@ -1,6 +1,6 @@
 import NavBar from "../../components/NavBar/NavBar";
 
-import { StCreateDesk } from "../CreateDesk/CreateDeskStyle";
+import { StCreateDesk } from "./RegisterStyle";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { postSignUp } from "../../services/api";
@@ -16,7 +16,6 @@ const initialInput = {
 };
 
 const idRegExp = /^[a-z0-9]{4,10}$/; // 소문자와 숫자만, 4-10자,
-// const passwordRegExp = /(?=.*\d)(?=.*[a-z][A-Z])(?=.*!@#).{4,15}/;
 const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{4,15}/; // 4-15자
 const nameRegExp = /^[가-힣a-zA-Z0-9]{1,20}$/; //글자수 1-20자 한글, 영어, 숫자만 가능.
 const emailRegExp = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
@@ -122,8 +121,8 @@ const Register = () => {
 
   return (
     <>
-      <NavBar page="create" />
       <StCreateDesk>
+        <NavBar page="create" />
         <h1>회원가입</h1>
 
         <form onSubmit={onSubmitHandler}>
@@ -139,8 +138,8 @@ const Register = () => {
           />
           {wrongPassword && (
             <p>
-              비밀번호는 영문 + 숫자 + !@# 를 조합한 8~15자리로 가능합니다. (ex:
-              1@#ab)
+              비밀번호는 영문 + 숫자 + !@#$%^&* 를 조합한 8~15자리로 가능합니다.
+              (ex: 1@#a2323b)
             </p>
           )}
 
@@ -159,7 +158,9 @@ const Register = () => {
             onChange={onChangeHandler}
             placeholder="비밀번호 확인"
           />
-          {wrongName && <p>이름은 2~6자의 한글만 사용 가능합니다.</p>}
+          {wrongName && (
+            <p>이름은 1~20자의 한글, 영어, 숫자만 사용 가능합니다.</p>
+          )}
           <input
             type="text"
             name="name"

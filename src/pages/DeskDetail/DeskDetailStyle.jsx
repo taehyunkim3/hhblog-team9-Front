@@ -25,8 +25,10 @@ export const StDeskDetailBody = styled.div`
   gap: 1rem;
   color: #ffffff;
   img {
-    width: 80vw;
-
+    max-width: 80vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
     // box-shadow: 0px 0px 50px 9px rgba(200, 200, 200, 0.3);
   }
   p {
