@@ -7,6 +7,7 @@ import Room from "../pages/Room/Room";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import { QueryClient } from "@tanstack/react-query";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +21,10 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/createdesk" element={<CreateDesk />} />
+        <Route
+          path="/createdesk"
+          element={<ProtectedRoute element={<CreateDesk />} />}
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/deskdetail/:id" element={<DeskDetail />} />

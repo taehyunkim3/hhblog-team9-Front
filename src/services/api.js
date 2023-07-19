@@ -32,23 +32,32 @@ export const getDeskDetail = async (id) => { // 상세
 //     description: "",
 //     deskImg: "",
 //   };
-export const postDesk = async ({ post }) => { // 사진전송추가
+export const postDesk = async (post) => { // 사진전송추가
     const token = localStorage.getItem("token");
 
-    console.log(post);
-    const { path: profilePath } = await axios({
+    console.log("postDesk" + JSON.stringify(post.profile));
+    const profileExt = post.profile.name.split('.').pop();
+    const deskImgExt = post.deskImg.name.split('.').pop();
+
+
+    const formProfileData = new FormData();
+    formProfileData.append('file', post.profile, `profile.${profileExt}`)
+    const formDeskData = new FormData();
+    formDeskData.append('file', post.deskImg, `desk.${deskImgExt}`)
+    const profileData = await axios({
         method: "post",
         url: `${baseUrl}/file`,
-        data: post.profile,
-        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+        data: formProfileData,
+        headers: { "Authorization": `Bearer ${token}` }
     });
-    const { path: deskImgPath } = await axios({
+    const deskData = await axios({
         method: "post",
         url: `${baseUrl}/file`,
-        data: post.deskImg,
-        headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
+        data: formDeskData,
+        headers: { "Authorization": `Bearer ${token}` }
     });
-    const dataWithUrl = { ...post, "deskImg": deskImgPath, "profile": profilePath }
+    console.log(JSON.stringify(profileData) + "4234234234" + deskData.data.path)
+    const dataWithUrl = { ...post, deskImg: deskData.data.path, profile: profileData.data.path }
     const formedToken = { headers: { "Authorization": `Bearer ${token}` } };
     const { data } = await axios.post(`${baseUrl}/desks`, dataWithUrl, formedToken);
     return data;
@@ -75,7 +84,7 @@ export const putModifyDesk = async ({ post, deskId }) => { // 사진전송추가
         data: post.deskImg,
         headers: { "Content-Type": "multipart/form-data", "Authorization": `Bearer ${token}` }
     });
-    const dataWithUrl = { ...post, "deskImg": deskImgPath, "profile": profilePath }
+    const dataWithUrl = { ...post, deskImg: deskImgPath, profile: profilePath }
     const formedToken = { headers: { "Authorization": `Bearer ${token}` } };
     const { data } = await axios.put(`${baseUrl}/desks/${deskId}`, dataWithUrl, formedToken);
     return data;
@@ -96,6 +105,7 @@ export const postSignUp = async (user) => { // 회원가입
 
 export const postLogIn = async (user) => { // 로그인
     const { data } = await axios.post(`${baseUrl}/auth/login`, user);
+    console.log(data);
     const result = await data.token.substring(6);
     return result;
 }

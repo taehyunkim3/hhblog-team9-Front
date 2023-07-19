@@ -24,10 +24,9 @@ const Login = () => {
     mutationFn: postLogIn,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["login"] });
-      console.log(data.token);
-      if (data.user) {
-        dispatch(userLogin(data.user));
-        localStorage.setItem("token", data.token);
+      if (data) {
+        dispatch(userLogin(data));
+        localStorage.setItem("token", data);
         console.log(data);
         navigate("/");
       } else {

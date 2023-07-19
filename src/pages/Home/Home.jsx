@@ -12,50 +12,20 @@ const Home = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [desks, setDesks] = useState([]);
   //
-  const {
-    data: desks,
-    isLoading,
-    isError,
-    error,
-  } = useQuery(["desks"], getDesks, {
-    staleTime: 60 * 1000, // 1분, default >> 0
-    cacheTime: 60 * 5 * 1000, // 5분, default >> 5분
+  const { isLoading, isError, error } = useQuery(["desks"], getDesks, {
     refetchOnWindowFocus: false,
-    retry: 0,
+    onSuccess: (data) => {
+      console.log("🐱" + data);
+      setDesks(data);
+    },
+    onError: (e) => {
+      console.log("🫠" + e);
+    },
+    retry: 1,
   });
   //
-
-  // const { isLoading: userLoading, isError: userError } = useQuery(
-  //   ["user"],
-  //   () => getMyInfo(token),
-  //   {
-  //     enabled: !!token,
-  //     refetchOnWindowFocus: false,
-  //     onSuccess: (data) => {
-  //       dispatch(userLogin(data));
-  //     },
-  //     onError: (error) => {
-  //       console.log(error);
-
-  //       if (error.message === "Token expired") {
-  //         // 로컬스토리지 토큰 삭제
-  //         localStorage.removeItem("token");
-  //         // 로그인 페이지로 이동
-  //         dispatch(userLogout());
-
-  //         navigate("/login");
-  //       } else {
-  //         dispatch(userLogout());
-  //       }
-  //     },
-  //     retry: (failureCount, error) => {
-  //       return false;
-  //     },
-  //   }
-  // );
-  // //
 
   return (
     <StHome>
@@ -63,8 +33,8 @@ const Home = () => {
       <StDesksBox>
         {isError && <h1>An error has occurred: {error.message}</h1>}
         {isLoading && !isError && <h1>Loading...</h1>}
-        {desks &&
-          desks.map((desk) => {
+        {!isLoading &&
+          desks?.map((desk) => {
             return (
               <StDeskWrapper key={desk.id}>
                 <Desk1 name={desk.name} image={desk.profile} id={desk.deskId} />

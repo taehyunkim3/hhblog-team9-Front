@@ -15,10 +15,10 @@ const initialInput = {
   email: "",
 };
 
-const idRegExp = /^[a-z0-9]{4,15}$/;
+const idRegExp = /^[a-z0-9]{4,10}$/; // 소문자와 숫자만, 4-10자,
 // const passwordRegExp = /(?=.*\d)(?=.*[a-z][A-Z])(?=.*!@#).{4,15}/;
-const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#]).{8,15}/;
-const nameRegExp = /^[가-힣]{2,6}$/;
+const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{4,15}/; // 4-15자
+const nameRegExp = /^[가-힣a-zA-Z0-9]{1,20}$/; //글자수 1-20자 한글, 영어, 숫자만 가능.
 const emailRegExp = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
 
 const Register = () => {

@@ -42,62 +42,53 @@ const StNavBar = styled.div`
     cursor: pointer;
   }
 `;
-const NavBar = ({
-  page = "home",
-  position = "static",
-  // isLogin = false,
-  // userInfo = { userId: "", userName: "", deskId: null },
-}) => {
+const NavBar = ({ page = "home", position = "static" }) => {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
-  const { isLogin, userId, userName, deskId } = useSelector(
-    (state) => state.userInfo
-  );
+  const { isLogin, userName, deskId } = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
   const onProfileClickHandler = () => {
     navigate("/login");
   };
   const onLogoutHandler = () => {
-    localStorage.removeItem("Token");
     localStorage.removeItem("token");
     dispatch(userLogout());
     navigate("/login");
     queryClient.refetchQueries("user");
   };
-  const { isLoading: userLoading, isError: userError } = useQuery(
-    ["user"],
-    () => getMyInfo(token),
-    {
-      enabled: !!token,
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        dispatch(userLogin(data));
-      },
-      onError: (error) => {
-        console.log(error);
+  useQuery(["user"], () => getMyInfo(token), {
+    enabled: !!token,
+    refetchOnWindowFocus: false,
+    onSuccess: (data) => {
+      console.log("토큰 유효성 검사 성공✅");
+      dispatch(userLogin(data));
+    },
+    onError: (error) => {
+      console.log("토큰 유효성 검사 실패🛑" + error);
 
-        if (error.message === "Token expired") {
-          // 로컬스토리지 토큰 삭제
-          localStorage.removeItem("token");
-          // 로그인 페이지로 이동
-          dispatch(userLogout());
+      // if (error.message === "Token expired") {
+      //   // 로컬스토리지 토큰 삭제
+      //   localStorage.removeItem("token");
+      //   // 로그인 페이지로 이동
+      //   dispatch(userLogout());
 
-          navigate("/login");
-        } else {
-          dispatch(userLogout());
-        }
-      },
-      retry: (failureCount, error) => {
-        return false;
-      },
-    }
-  );
+      //   navigate("/login");
+      // } else {
+      localStorage.removeItem("token");
+      dispatch(userLogout());
+      navigate("/login");
+      // }
+    },
+    retry: (failureCount, error) => {
+      return false;
+    },
+  });
   //
 
   return (
     <StNavBar position={position}>
       <h1 onClick={() => navigate("/")}>항구LOG</h1>
-      <p>99일 우리들의 항해 기록 ver.0.9</p>
+      <p>99일 우리들의 항해 기록 ver.0.9.2</p>
 
       {page === "home" && <DeskPostSelector />}
       {page === "home" &&
@@ -127,11 +118,5 @@ const NavBar = ({
 NavBar.propTypes = {
   page: PropTypes.string,
   position: PropTypes.string,
-  // isLogin: PropTypes.bool,
-  // userInfo: PropTypes.shape({
-  //   userId: PropTypes.string,
-  //   userName: PropTypes.string,
-  //   deskId: PropTypes.string,
-  // }),
 };
 export default NavBar;
