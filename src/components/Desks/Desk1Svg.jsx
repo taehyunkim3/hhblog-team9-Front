@@ -8,6 +8,8 @@ const Desk1Svg = ({
   width = "300px",
   height = "300px",
   IMAGEURL = "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcQkrjYxSfSHeCEA7hkPy8e2JphDsfFHZVKqx-3t37E4XKr-AT7DML8IwtwY0TnZsUcQ",
+  marginTop = "0px",
+  marginBottom = "0px",
 }) => {
   const lampColor = isHovered ? "yellow" : "#000000";
 
@@ -19,7 +21,13 @@ const Desk1Svg = ({
       x="0px"
       y="0px"
       viewBox="0 0 417.1 365.7"
-      style={{ enableBackground: "new 0 0 492 492", width, height }}
+      style={{
+        enableBackground: "new 0 0 492 492",
+        width,
+        height,
+        marginTop,
+        marginBottom,
+      }}
       xmlSpace="preserve"
     >
       <g id="Layer_1">
@@ -91,7 +99,7 @@ const Desk1Svg = ({
           preserveAspectRatio="xMidYMid slice"
         />
       </g>
-      {/* M309 가 램프임 */}
+      {/* M309 가 램프임 여기가 램프 내부 채워서 노랗게 보여주는거*/}
       <path
         d="M309.8,31.8h40.1h3.8l1.5,3.6L375,75.8l3.3,8h-8.6H290h-8.6l3.3-8l19.8-40.5l1.5-3.6L309.8,31.8L309.8,31.8z"
         fill={lampColor}

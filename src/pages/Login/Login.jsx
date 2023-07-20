@@ -1,7 +1,7 @@
 import NavBar from "../../components/NavBar/NavBar";
 
 import Desk1Svg from "../../components/Desks/Desk1Svg";
-import { StCreateDesk } from "./LoginStyle";
+import { StLogin } from "./LoginStyle";
 import { useState } from "react";
 import { QueryClient, useMutation } from "@tanstack/react-query";
 import { postLogIn } from "../../services/api";
@@ -69,9 +69,9 @@ const Login = () => {
 
   return (
     <>
-      <StCreateDesk>
+      <StLogin>
         <NavBar page="create" className="nav" />
-        <Desk1Svg></Desk1Svg>
+        <Desk1Svg marginTop="3rem" marginBottom="3rem" />
 
         <h1>로그인</h1>
 
@@ -103,7 +103,7 @@ const Login = () => {
             회원가입
           </Button>
         </form>
-      </StCreateDesk>
+      </StLogin>
     </>
   );
 };
