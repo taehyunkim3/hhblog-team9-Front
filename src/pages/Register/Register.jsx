@@ -32,22 +32,34 @@ const Register = () => {
   // const [submitForm, setSubmitForm] = useState(false); //화면 나갈때 붉은글씨 방지
   const [loading, setLoading] = useState(false);
 
-  const mutation = useMutation({
-    mutationFn: postSignUp,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+  // const mutation = useMutation({
+  //   mutationFn: postSignUp,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["user"] });
+  //     navigate("/login");
+
+  //   },
+  //   onError: (error) => {
+  //     if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+  //       alert(
+  //         "사이트 백앤드 서버와 통신이 어려운것 같아요. 관리자에게 문의해주세요!"
+  //       );
+  //     } else {
+  //       alert(error);
+  //     }
+  //   },
+  // });
+  const handleSignUp = async (user) => {
+    try {
+      await postSignUp(user);
+      // queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/login");
-    },
-    onError: (error) => {
-      if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
-        alert(
-          "사이트 백앤드 서버와 통신이 어려운것 같아요. 관리자에게 문의해주세요!"
-        );
-      } else {
-        alert(error);
-      }
-    },
-  });
+    } catch (e) {
+      alert(e.response.data.msg);
+      navigate("/register");
+      window.location.reload(); // 새로고침
+    }
+  };
 
   const onChangeHandler = (e) => {
     if (input.userPassword !== input.verifyPassword) {
@@ -116,31 +128,18 @@ const Register = () => {
       input.email
     ) {
       setLoading(true);
-      mutation.mutate({
+      handleSignUp({
         userId: input.userId,
         userPassword: input.userPassword,
         name: input.name,
         email: input.email,
       });
-      // setSubmitForm(false);
+
       setInput(initialInput);
-      // setSubmitForm(true);
+    } else {
+      alert("모든 항목이 통과✅ 상태 인지 확인해주세요 !😱");
     }
   };
-
-  // useEffect(() => {
-  //   if (submitForm) {
-  //     // setLoading(true);
-  //     // mutation.mutate({
-  //     //   userId: input.userId,
-  //     //   userPassword: input.userPassword,
-  //     //   name: input.name,
-  //     //   email: "example@example.com",
-  //     // });
-  //     // setSubmitForm(false);
-  //     // setInput(initialInput);
-  //   }
-  // }, [submitForm]);
 
   return (
     <>
@@ -150,11 +149,11 @@ const Register = () => {
 
         <form onSubmit={onSubmitHandler}>
           <label>
-            아이디{" "}
+            아이디
             <span>
               {wrongId
-                ? ` 아이디는 4~15자의 영문 소문자, 숫자만 사용 가능합니다. (ex:aaaaa)`
-                : "✅ 좋아요!"}
+                ? ` ⛔️ 아이디는 4~15자의 영문 소문자, 숫자만 사용 가능합니다. (ex:aaaaa)`
+                : " ✅ 통과!"}
             </span>
             <br />
             <input
@@ -169,9 +168,9 @@ const Register = () => {
             비밀번호{" "}
             <span>
               {wrongPassword
-                ? `  비밀번호는 영문 + 숫자 + !@#$%^&* 를 조합한 8~15자리로
+                ? ` ⛔️ 비밀번호는 영문 + 숫자 + !@#$%^&* 를 조합한 8~15자리로
                 가능합니다. (ex: aaaaa11!!)`
-                : "✅ 좋아요!"}
+                : " ✅ 통과!"}
             </span>
             <br />
             <input
@@ -187,8 +186,8 @@ const Register = () => {
             <span>
               {input.verifyPassword &&
                 (input.verifyPassword !== input.userPassword
-                  ? "  비밀번호가 일치하지 않습니다."
-                  : "✅ 좋아요!")}
+                  ? " ⛔️ 비밀번호가 일치하지 않습니다."
+                  : " ✅ 통과!")}
             </span>
             <br />
             <input
@@ -204,8 +203,8 @@ const Register = () => {
             이름
             <span>
               {wrongName
-                ? `  이름은 1~20자의 한글, 영어, 숫자만 사용 가능합니다.`
-                : "✅ 좋아요!"}
+                ? ` ⛔️ 이름은 1~20자의 한글, 영어, 숫자만 사용 가능합니다.`
+                : " ✅ 통과!"}
             </span>
             <br />
             <input
@@ -221,8 +220,8 @@ const Register = () => {
             <span>
               {input.email &&
                 (wrongEmail
-                  ? " 이메일 형식에 맞게 입력해주세요.(ex:aaa@aaa.com)"
-                  : "✅ 좋아요!")}
+                  ? " ⛔️ 이메일 형식에 맞게 입력해주세요.(ex:aaa@aaa.com)"
+                  : " ✅ 통과!")}
             </span>
             <br />
             <input

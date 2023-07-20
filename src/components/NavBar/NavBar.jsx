@@ -1,5 +1,3 @@
-import { styled } from "styled-components";
-import DeskPostSelector from "../Selector/DeskPostSelector";
 import { CgProfile } from "react-icons/cg";
 import { TbDeviceDesktopPlus } from "react-icons/tb";
 import { FaPenRuler } from "react-icons/fa6";
@@ -33,20 +31,20 @@ const NavBar = ({ page = "home", position = "static" }) => {
       dispatch(userLogin(data));
     },
     onError: (error) => {
-      console.log("토큰 유효성 검사 실패🛑" + error);
+      if (error.message === "Token expired") {
+        // 로컬스토리지 토큰 삭제
+        localStorage.removeItem("token");
+        // 로그인 페이지로 이동
+        dispatch(userLogout());
 
-      // if (error.message === "Token expired") {
-      //   // 로컬스토리지 토큰 삭제
-      //   localStorage.removeItem("token");
-      //   // 로그인 페이지로 이동
-      //   dispatch(userLogout());
-
-      //   navigate("/login");
-      // } else {
-      localStorage.removeItem("token");
-      dispatch(userLogout());
-      navigate("/login");
-      // }
+        navigate("/login");
+        console.log("토큰 만료🛑" + error);
+      } else {
+        localStorage.removeItem("token");
+        dispatch(userLogout());
+        navigate("/login");
+        console.log("토큰 유효성 검사 통신 오류🛑" + error);
+      }
     },
     retry: (failureCount, error) => {
       return false;
@@ -57,7 +55,7 @@ const NavBar = ({ page = "home", position = "static" }) => {
   return (
     <StNavBar position={position}>
       <StTitle onClick={() => navigate("/")}>항구LOG</StTitle>
-      <p>99일 우리들의 항해 기록 / ver.0.9.6.6 / beta 업데이트 7.20 10:15</p>
+      <p>99일 우리들의 항해 기록 / ver.0.9.6.7 / beta 업데이트 7.20 10:19</p>
 
       {/* {page === "home" && <DeskPostSelector />} */}
       {page === "home" &&

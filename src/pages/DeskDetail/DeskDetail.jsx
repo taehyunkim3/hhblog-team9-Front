@@ -5,6 +5,7 @@ import { MdOutlineMarkUnreadChatAlt } from "react-icons/md";
 import { TbArrowBackUp } from "react-icons/tb";
 
 import {
+  StDesc,
   StDeskDetailBg,
   StDeskDetailBody,
   StHoverShadow,
@@ -36,11 +37,11 @@ const DeskDetail = () => {
         <TbArrowBackUp className="arrow left" />
 
         {/* <h2>교실로</h2> */}
-        <div>
+        <div className="divider">
           <h3>"{name}님의 책상"</h3>
 
           <img src={deskImg} alt={`${name}님의 책상 사진입니다.`} />
-          <p>"{description}"</p>
+          <StDesc>"{description}"</StDesc>
         </div>
 
         {/* <h2>방으로</h2> */}

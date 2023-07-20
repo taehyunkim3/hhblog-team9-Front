@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const StDeskDetailBg = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   padding-bottom: 130px;
 
@@ -26,7 +26,7 @@ export const StDeskDetailBody = styled.div`
   color: #ffffff;
   img {
     max-width: 80vw;
-    max-height: 80vh;
+    max-height: 70vh;
     width: auto;
     height: auto;
     // box-shadow: 0px 0px 50px 9px rgba(200, 200, 200, 0.3);
@@ -35,12 +35,14 @@ export const StDeskDetailBody = styled.div`
     font-size: 2rem;
     margin: 1rem;
   }
-  div {
+  .divider {
+    margin: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
+    gap: 1rem;
   }
   .arrow {
     color: grey;
@@ -86,4 +88,20 @@ export const StHoverShadow = styled.div`
     );
   }
   cursor:pointer;
+`;
+export const StDesc = styled.div`
+  font-family: "Gowun Batang", serif;
+  margin-top: 1rem;
+  line-height: 1.7;
+  width: 70vw;
+  height: 100%;
+  border-radius: 1rem;
+  padding: 2rem;
+  font-size: 1.3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ebebeb;
+  @media (max-width: 820px) {
+    font-size: 1rem;
+  }
 `;

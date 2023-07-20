@@ -35,7 +35,7 @@ background: radial-gradient(
     max-width: 30rem;
     height: 4rem;
     border-radius: 1rem;
-    border: 1px solid #e0e0e0;
+  
     padding: 0.8rem;
     font-size: 1.5rem;
   }
