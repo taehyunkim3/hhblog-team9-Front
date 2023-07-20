@@ -76,7 +76,7 @@ export const StHoverShadow = styled.div`
   height: 100%;
   padding-bottom:130px;
   ${(prop) => (prop.position === "right" ? "right:0" : "left: 0")};
-  max-width: 20rem;
+  width: 20rem;
   background: radial-gradient(ellipse farthest-corner at top ${(prop) =>
     prop.position === "right" ? "right" : "left"}, 
     rgba(140,140,140,0.5) 0%, ${(prop) =>

@@ -33,7 +33,7 @@ const Login = () => {
       }
     },
     onError: (error) => {
-      alert(error);
+      alert("🙇🏼‍♀️" + error);
     },
   });
 

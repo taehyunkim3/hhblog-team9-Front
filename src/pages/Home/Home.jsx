@@ -11,8 +11,7 @@ import Desk2Svg from "../../components/Desks/Desk1Svg";
 
 const Home = () => {
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const [desks, setDesks] = useState([]);
   //
   const { isLoading, isError, error } = useQuery(["desks"], getDesks, {

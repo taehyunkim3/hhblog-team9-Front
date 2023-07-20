@@ -1,7 +1,7 @@
 import NavBar from "../../components/NavBar/NavBar";
 
 import { StCreateDesk } from "./RegisterStyle";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { postSignUp } from "../../services/api";
 import { queryClient } from "../../routes/Router";
@@ -29,71 +29,47 @@ const Register = () => {
   const [wrongId, setWrongId] = useState(true);
   const [wrongName, setWrongName] = useState(true);
   const [wrongEmail, setWrongEmail] = useState(true);
-  // const [submitForm, setSubmitForm] = useState(false); //화면 나갈때 붉은글씨 방지
+
   const [loading, setLoading] = useState(false);
 
-  // const mutation = useMutation({
-  //   mutationFn: postSignUp,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["user"] });
-  //     navigate("/login");
-
-  //   },
-  //   onError: (error) => {
-  //     if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
-  //       alert(
-  //         "사이트 백앤드 서버와 통신이 어려운것 같아요. 관리자에게 문의해주세요!"
-  //       );
-  //     } else {
-  //       alert(error);
-  //     }
-  //   },
-  // });
-  const handleSignUp = async (user) => {
-    try {
-      await postSignUp(user);
-      // queryClient.invalidateQueries({ queryKey: ["user"] });
+  const mutateSignup = useMutation({
+    mutationFn: postSignUp,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/login");
-    } catch (e) {
-      alert(e.response.data.msg);
+    },
+    onError: (error) => {
+      alert("🦊" + error);
       navigate("/register");
       window.location.reload(); // 새로고침
-    }
-  };
+    },
+  });
 
   const onChangeHandler = (e) => {
-    if (input.userPassword !== input.verifyPassword) {
-      setNoMatchPassword(true);
-    } else if (input.userPassword === input.verifyPassword) {
-      setNoMatchPassword(false);
-    }
-    if (!idRegExp.test(input.userId)) {
-      setWrongId(true);
-    } else if (idRegExp.test(input.userId)) {
-      setWrongId(false);
-    }
-
-    if (!passwordRegExp.test(input.userPassword)) {
-      setWrongPassword(true);
-    } else if (passwordRegExp.test(input.userPassword)) {
-      setWrongPassword(false);
-    }
-
-    if (!nameRegExp.test(input.name)) {
-      setWrongName(true);
-    } else if (nameRegExp.test(input.name)) {
-      setWrongName(false);
-    }
-    if (!emailRegExp.test(input.email)) {
-      setWrongEmail(true);
-    } else if (emailRegExp.test(input.email)) {
-      setWrongEmail(false);
-    }
     const { name, value } = e.target;
     setInput({
       ...input,
       [name]: value,
     });
+    switch (name) {
+      case "userId":
+        setWrongId(!idRegExp.test(value));
+        break;
+      case "userPassword":
+        setWrongPassword(!passwordRegExp.test(value));
+        break;
+      case "verifyPassword":
+        setNoMatchPassword(value !== input.userPassword);
+        break;
+      case "name":
+        setWrongName(!nameRegExp.test(value));
+        break;
+      case "email":
+        setWrongEmail(!emailRegExp.test(value));
+        break;
+      default:
+        break;
+    }
   };
 
   const onSubmitHandler = (e) => {
@@ -128,7 +104,7 @@ const Register = () => {
       input.email
     ) {
       setLoading(true);
-      handleSignUp({
+      mutateSignup({
         userId: input.userId,
         userPassword: input.userPassword,
         name: input.name,

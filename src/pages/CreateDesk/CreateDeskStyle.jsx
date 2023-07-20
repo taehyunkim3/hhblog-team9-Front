@@ -103,14 +103,15 @@ export const StCreateDesk = styled.div`
     rgba(67, 67, 67, 1) 0%,
     rgba(0, 0, 0, 1) 100%
   );
-  color: #b2b2b3ff;
 `;
 
 export const StCreateDeskBody = styled.div`
+color: #b2b2b3ff;
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 2rem;
 
+  min-width:100vw;
   min-height: 100vh;
   padding: 1rem;
   padding-top: 4rem;
@@ -139,18 +140,23 @@ label {
 
   form input,
   form textarea {
-  width:70vw;
+    width:70vw;
     height: 4rem;
     border-radius: 1rem;
     border: 1px solid #e0e0e0;
     padding: 0.8rem;
-    font-size: 1.5rem;
+    font-family: "Gowun Batang", serif;
+    font-size: 1.3rem;
     background-color: rgba(255, 255, 255, 0.1);
     border:none;
   }
-
   form textarea {
     height: 20rem;
+    margin-top: 1rem;
+    line-height: 1.7;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.1);
+
   }
 
   div{

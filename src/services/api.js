@@ -21,7 +21,7 @@ export const getDeskDetail = async (id) => { // 상세
         const { data } = await axios.get(`${baseUrl}/desks/${id}`);
         return data;
     } catch (e) {
-        alert(e.response.data.msg);
+        throw new Error(e.response.data.msg);
     }
 }
 
@@ -145,7 +145,8 @@ export const postLogIn = async (user) => { // 로그인
         const result = await data.token.substring(6);
         return result;
     } catch (e) {
-        alert(e.response.data.msg);
+        throw new Error(e.response.data.msg);
+        // alert(e.response.data.msg);
     }
 }
 

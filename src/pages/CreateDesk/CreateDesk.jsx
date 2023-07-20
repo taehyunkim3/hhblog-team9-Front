@@ -1,21 +1,19 @@
 import NavBar from "../../components/NavBar/NavBar";
 import Desk1Svg from "../../components/Desks/Desk1Svg";
 import { StCreateDesk, StCreateDeskBody } from "./CreateDeskStyle";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   deleteDesk,
   getDeskDetail,
-  getDesks,
   postDesk,
   putModifyDesk,
 } from "../../services/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { queryClient } from "../../routes/Router";
 import imageCompression from "browser-image-compression";
 import { useSelector } from "react-redux";
 import Button from "../../components/Button/Button";
-import MonitorSvg from "../../components/Monitor/MonitorSvg";
 
 const initialInput = {
   description: "",
@@ -24,7 +22,6 @@ const initialInput = {
 };
 
 const CreateDesk = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const [input, setInput] = useState(initialInput);
   const [isAlert, setIsAlert] = useState(false);

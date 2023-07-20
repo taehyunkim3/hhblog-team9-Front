@@ -9,53 +9,27 @@ import { queryClient } from "../../routes/Router";
 import { getMyInfo } from "../../services/api";
 import { useQuery } from "@tanstack/react-query";
 import { StNavBar, StTitle } from "./NavBarStyle";
+import { useAuth } from "../../hooks/useAuth";
 const NavBar = ({ page = "home", position = "static" }) => {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
   const { isLogin, userName, deskId } = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
+  const { logout } = useAuth(token);
+
   const onProfileClickHandler = () => {
     navigate("/login");
   };
   const onLogoutHandler = () => {
-    localStorage.removeItem("token");
-    dispatch(userLogout());
+    logout();
     navigate("/login");
     queryClient.refetchQueries("user");
   };
-  useQuery(["user"], () => getMyInfo(token), {
-    enabled: !!token,
-    refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      console.log("토큰 유효성 검사 성공✅");
-      dispatch(userLogin(data));
-    },
-    onError: (error) => {
-      if (error.message === "Token expired") {
-        // 로컬스토리지 토큰 삭제
-        localStorage.removeItem("token");
-        // 로그인 페이지로 이동
-        dispatch(userLogout());
-
-        navigate("/login");
-        console.log("토큰 만료🛑" + error);
-      } else {
-        localStorage.removeItem("token");
-        dispatch(userLogout());
-        navigate("/login");
-        console.log("토큰 유효성 검사 통신 오류🛑" + error);
-      }
-    },
-    retry: (failureCount, error) => {
-      return false;
-    },
-  });
-  //
 
   return (
     <StNavBar position={position}>
       <StTitle onClick={() => navigate("/")}>항구LOG</StTitle>
-      <p>99일 우리들의 항해 기록 / ver.0.9.6.7 / beta 업데이트 7.20 10:19</p>
+      <p>99일 우리들의 항해 기록 / ver.0.9.6.8 / beta 업데이트 7.20 12:10</p>
 
       {/* {page === "home" && <DeskPostSelector />} */}
       {page === "home" &&
