@@ -28,7 +28,7 @@ const NavBar = ({ page = "home", position = "static" }) => {
   return (
     <StNavBar position={position}>
       <StTitle onClick={() => navigate("/")}>항구LOG</StTitle>
-      <p>99일 우리들의 항해 기록 / ver.0.9.8.5 / beta 업데이트 7.20 16:07</p>
+      <p>99일 우리들의 항해 기록 / ver.0.9.8.7 / beta 업데이트 7.20 18:19</p>
 
       {/* {page === "home" && <DeskPostSelector />} */}
       {page === "home" &&

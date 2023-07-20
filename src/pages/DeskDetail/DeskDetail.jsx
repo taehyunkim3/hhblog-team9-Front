@@ -33,7 +33,11 @@ const DeskDetail = () => {
     <StDeskDetailBg>
       <NavBar page="home" />
       <StDeskDetailBody>
-        <StHoverShadow position={"left"} onClick={() => navigate(`/`)} />
+        <StHoverShadow
+          position={"left"}
+          onClick={() => navigate(`/`)}
+          onTouchStart={() => navigate(`/`)}
+        />
         <TbArrowBackUp className="arrow left" />
 
         {/* <h2>교실로</h2> */}
@@ -49,6 +53,7 @@ const DeskDetail = () => {
         <StHoverShadow
           position={"right"}
           onClick={() => alert("구현 준비중 입니다🦊")}
+          onTouchStart={() => alert("구현 준비중 입니다🦊")}
           // onClick={() => navigate(`/deskdetail/${deskId}/room`)}
         />
       </StDeskDetailBody>
