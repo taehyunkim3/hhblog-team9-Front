@@ -154,11 +154,8 @@ const CreateDesk = () => {
         <NavBar page="create" />
         <StCreateDeskBody>
           <div>
-            {isAlert ? (
-              <h1>모든 항목을 입력해주세요.</h1>
-            ) : (
-              <h1>Create your own desk</h1>
-            )}
+            <h1>Create your own desk</h1>
+
             {profileUrl && (
               <>
                 <Desk1Svg
@@ -184,7 +181,7 @@ const CreateDesk = () => {
                 name="description"
                 value={input.description}
                 onChange={onChangeHandler}
-                placeholder="나의 책상 소개"
+                placeholder="책상을 통해 이루고 싶은 목표를 자유롭게 적어주세요!"
               />
             </label>
             <label>

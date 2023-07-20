@@ -24,12 +24,12 @@ const Register = () => {
   const navigate = useNavigate();
   const [input, setInput] = useState(initialInput);
 
-  const [wrongPassword, setWrongPassword] = useState(false);
+  const [wrongPassword, setWrongPassword] = useState(true);
   const [noMatchPassword, setNoMatchPassword] = useState(false);
-  const [wrongId, setWrongId] = useState(false);
-  const [wrongName, setWrongName] = useState(false);
-  const [wrongEmail, setWrongEmail] = useState(false);
-  const [submitForm, setSubmitForm] = useState(false); //화면 나갈때 붉은글씨 방지
+  const [wrongId, setWrongId] = useState(true);
+  const [wrongName, setWrongName] = useState(true);
+  const [wrongEmail, setWrongEmail] = useState(true);
+  // const [submitForm, setSubmitForm] = useState(false); //화면 나갈때 붉은글씨 방지
   const [loading, setLoading] = useState(false);
 
   const mutation = useMutation({
@@ -50,17 +50,38 @@ const Register = () => {
   });
 
   const onChangeHandler = (e) => {
+    if (input.userPassword !== input.verifyPassword) {
+      setNoMatchPassword(true);
+    } else if (input.userPassword === input.verifyPassword) {
+      setNoMatchPassword(false);
+    }
+    if (!idRegExp.test(input.userId)) {
+      setWrongId(true);
+    } else if (idRegExp.test(input.userId)) {
+      setWrongId(false);
+    }
+
+    if (!passwordRegExp.test(input.userPassword)) {
+      setWrongPassword(true);
+    } else if (passwordRegExp.test(input.userPassword)) {
+      setWrongPassword(false);
+    }
+
+    if (!nameRegExp.test(input.name)) {
+      setWrongName(true);
+    } else if (nameRegExp.test(input.name)) {
+      setWrongName(false);
+    }
+    if (!emailRegExp.test(input.email)) {
+      setWrongEmail(true);
+    } else if (emailRegExp.test(input.email)) {
+      setWrongEmail(false);
+    }
     const { name, value } = e.target;
     setInput({
       ...input,
       [name]: value,
     });
-
-    setNoMatchPassword(false);
-    setWrongPassword(false);
-    setWrongId(false);
-    setWrongName(false);
-    setWrongEmail(false);
   };
 
   const onSubmitHandler = (e) => {
@@ -94,12 +115,6 @@ const Register = () => {
       input.name &&
       input.email
     ) {
-      setSubmitForm(true);
-    }
-  };
-
-  useEffect(() => {
-    if (submitForm) {
       setLoading(true);
       mutation.mutate({
         userId: input.userId,
@@ -107,17 +122,25 @@ const Register = () => {
         name: input.name,
         email: input.email,
       });
-      setSubmitForm(false);
+      // setSubmitForm(false);
       setInput(initialInput);
+      // setSubmitForm(true);
     }
-  }, [
-    // input.email,
-    // input.name,
-    // input.userId,
-    // input.userPassword,
-    // mutation,
-    submitForm,
-  ]);
+  };
+
+  // useEffect(() => {
+  //   if (submitForm) {
+  //     // setLoading(true);
+  //     // mutation.mutate({
+  //     //   userId: input.userId,
+  //     //   userPassword: input.userPassword,
+  //     //   name: input.name,
+  //     //   email: "example@example.com",
+  //     // });
+  //     // setSubmitForm(false);
+  //     // setInput(initialInput);
+  //   }
+  // }, [submitForm]);
 
   return (
     <>
@@ -126,56 +149,91 @@ const Register = () => {
         <h1>회원가입</h1>
 
         <form onSubmit={onSubmitHandler}>
-          {wrongId && (
-            <p>아이디는 4~15자의 영문 소문자, 숫자만 사용 가능합니다.</p>
-          )}
-          <input
-            type="text"
-            name="userId"
-            value={input.userId}
-            onChange={onChangeHandler}
-            placeholder="아이디"
-          />
-          {wrongPassword && (
-            <p>
-              비밀번호는 영문 + 숫자 + !@#$%^&* 를 조합한 8~15자리로 가능합니다.
-              (ex: 1@#a2323b)
-            </p>
-          )}
+          <label>
+            아이디{" "}
+            <span>
+              {wrongId
+                ? ` 아이디는 4~15자의 영문 소문자, 숫자만 사용 가능합니다. (ex:aaaaa)`
+                : "✅ 좋아요!"}
+            </span>
+            <br />
+            <input
+              type="text"
+              name="userId"
+              value={input.userId}
+              onChange={onChangeHandler}
+              placeholder="아이디"
+            />
+          </label>
+          <label>
+            비밀번호{" "}
+            <span>
+              {wrongPassword
+                ? `  비밀번호는 영문 + 숫자 + !@#$%^&* 를 조합한 8~15자리로
+                가능합니다. (ex: aaaaa11!!)`
+                : "✅ 좋아요!"}
+            </span>
+            <br />
+            <input
+              type="password"
+              name="userPassword"
+              value={input.userPassword}
+              onChange={onChangeHandler}
+              placeholder="비밀번호"
+            />
+          </label>
+          <label>
+            비밀번호 확인{" "}
+            <span>
+              {input.verifyPassword &&
+                (input.verifyPassword !== input.userPassword
+                  ? "  비밀번호가 일치하지 않습니다."
+                  : "✅ 좋아요!")}
+            </span>
+            <br />
+            <input
+              type="password"
+              name="verifyPassword"
+              value={input.verifyPassword}
+              onChange={onChangeHandler}
+              placeholder="비밀번호 확인"
+            />
+          </label>
 
-          <input
-            type="password"
-            name="userPassword"
-            value={input.userPassword}
-            onChange={onChangeHandler}
-            placeholder="비밀번호"
-          />
-          {noMatchPassword && <p>비밀번호가 일치하지 않습니다.</p>}
-          <input
-            type="password"
-            name="verifyPassword"
-            value={input.verifyPassword}
-            onChange={onChangeHandler}
-            placeholder="비밀번호 확인"
-          />
-          {wrongName && (
-            <p>이름은 1~20자의 한글, 영어, 숫자만 사용 가능합니다.</p>
-          )}
-          <input
-            type="text"
-            name="name"
-            value={input.name}
-            onChange={onChangeHandler}
-            placeholder="이름"
-          />
-          {wrongEmail && <p>이메일 형식이 올바르지 않습니다.</p>}
-          <input
-            type="email"
-            name="email"
-            value={input.email}
-            onChange={onChangeHandler}
-            placeholder="이메일"
-          />
+          <label>
+            이름
+            <span>
+              {wrongName
+                ? `  이름은 1~20자의 한글, 영어, 숫자만 사용 가능합니다.`
+                : "✅ 좋아요!"}
+            </span>
+            <br />
+            <input
+              type="text"
+              name="name"
+              value={input.name}
+              onChange={onChangeHandler}
+              placeholder="이름"
+            />
+          </label>
+          <label>
+            이메일
+            <span>
+              {input.email &&
+                (wrongEmail
+                  ? " 이메일 형식에 맞게 입력해주세요.(ex:aaa@aaa.com)"
+                  : "✅ 좋아요!")}
+            </span>
+            <br />
+            <input
+              type="email"
+              name="email"
+              value={input.email}
+              onChange={onChangeHandler}
+              placeholder="이메일"
+            />
+          </label>
+
           <button type="submit">{loading ? "제출중" : "입력완료"}</button>
         </form>
       </StCreateDesk>

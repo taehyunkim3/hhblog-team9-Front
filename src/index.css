@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 } */
+
+@import url("https://fonts.googleapis.com/css2?family=Grandiflora+One&family=Nanum+Gothic+Coding:wght@400;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap");
+* {
+  font-family: "Grandiflora One", serif;
+}

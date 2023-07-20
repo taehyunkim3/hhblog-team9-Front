@@ -11,7 +11,9 @@ export const StNavBar = styled.div`
   border-bottom: 1px solid #e0e0e0;
   top: 0;
   position: ${(prop) => (prop.position === "fixed" ? "fixed" : "static")};
-
+  @media (max-width: 820px) {
+    font-size: 0.7rem;
+  }
   background-color: #f6f5f7;
   opacity: 0.7;
   .profile {
@@ -31,4 +33,7 @@ export const StTitle = styled.p`
   font-weight: 700;
   color: red;
   cursor: pointer;
+  @media (max-width: 820px) {
+    font-size: 1.5rem;
+  }
 `;

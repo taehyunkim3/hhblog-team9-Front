@@ -110,12 +110,14 @@ export const StCreateDeskBody = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 2rem;
-  // justify-items: center;
+
   min-height: 100vh;
   padding: 1rem;
   padding-top: 4rem;
 
-
+label {
+  line-height: 2;
+}
 
   h1 {
     font-size: 2rem;

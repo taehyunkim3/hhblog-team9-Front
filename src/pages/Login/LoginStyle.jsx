@@ -18,6 +18,7 @@ background: radial-gradient(
     top:0;
   }
   h1 {
+  color: #ffffff;
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 2rem;
@@ -29,9 +30,9 @@ background: radial-gradient(
     align-items: center;
     gap: 1rem;
   }
-  form input,
-  form textarea {
-    width: 40rem;
+  form input{
+    width: 70vw;
+    max-width: 30rem;
     height: 4rem;
     border-radius: 1rem;
     border: 1px solid #e0e0e0;
@@ -47,34 +48,5 @@ background: radial-gradient(
   }
 
 
-    form button {
-      width: 20rem;
-      height: 3rem;
-      border-radius: 1rem;
-      border: 1px solid #e0e0e0;
-      background-color: #f6f5f7;
-      font-size: 1.5rem;
-
-      cursor: pointer;
-      transition: all 0.1s ease-in-out;
-      &:hover {
-        background-color: #fed84a;
-      }
-    }
-  }
-`;
-
-export const AutoUrl = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin: 2rem;
-  label {
-    font-size: 1.5rem;
-  }
-  input {
-    width: 2rem;
-    height: 2rem;
   }
 `;

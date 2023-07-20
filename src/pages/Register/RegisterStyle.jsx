@@ -12,10 +12,12 @@ background: radial-gradient(
 );
   display: flex;
   flex-direction: column;
-
   align-items: center;
   .nav{
     top:0;
+  }
+  span{
+    font-size: .75rem;
   }
   h1 {
     font-size: 2rem;
@@ -31,8 +33,7 @@ background: radial-gradient(
     align-items: center;
     gap: 1rem;
   }
-  form input,
-  form textarea {
+  form input{
     max-width: 40rem;
     width:80vw;
     height: 4rem;
@@ -40,15 +41,18 @@ background: radial-gradient(
     border: 1px solid #e0e0e0;
     padding: 0.8rem;
     font-size: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border:none;
   }
-  form textarea {
-    height: 10rem;
-  }
+
   form input::placeholder {
     padding: 0 1rem;
     font-size: 1rem;
   }
-
+  label {
+    line-height: 2;
+  }
+  
 
     form button {
       width: 20rem;
