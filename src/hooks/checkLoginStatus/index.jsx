@@ -12,3 +12,5 @@ export const checkLoginStatus = async () => {
     return false;
   }
 };
+//protectedRoute에서 사용하는 함수입니다.
+//로그인 상태를 체크합니다.
