@@ -173,3 +173,16 @@ export const getMyInfo = async (token) => { // 내 정보fix
     }
 }
 
+export const getIsValidId = async (userId) => {
+    try {
+        const { data } = await axios.post(`${baseUrl}/auth/signup/Id`, {
+
+            userId: userId,
+
+        });
+        return data.isMatchId; // 서버에서 true 또는 false를 반환한다고 가정
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}

@@ -3,16 +3,15 @@ import { TbDeviceDesktopPlus } from "react-icons/tb";
 import { FaPenRuler } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
-import { userLogin, userLogout } from "../../redux/reducers/userInfo";
+import { useSelector } from "react-redux";
+
 import { queryClient } from "../../routes/Router";
-import { getMyInfo } from "../../services/api";
-import { useQuery } from "@tanstack/react-query";
+
 import { StNavBar, StTitle } from "./NavBarStyle";
 import { useAuth } from "../../hooks/useAuth";
 const NavBar = ({ page = "home", position = "static" }) => {
   const token = localStorage.getItem("token");
-  const dispatch = useDispatch();
+
   const { isLogin, userName, deskId } = useSelector((state) => state.userInfo);
   const navigate = useNavigate();
   const { logout } = useAuth(token);
@@ -29,7 +28,7 @@ const NavBar = ({ page = "home", position = "static" }) => {
   return (
     <StNavBar position={position}>
       <StTitle onClick={() => navigate("/")}>항구LOG</StTitle>
-      <p>99일 우리들의 항해 기록 / ver.0.9.7 / beta 업데이트 7.20 12:58</p>
+      <p>99일 우리들의 항해 기록 / ver.0.9.8.5 / beta 업데이트 7.20 16:07</p>
 
       {/* {page === "home" && <DeskPostSelector />} */}
       {page === "home" &&

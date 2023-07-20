@@ -1,9 +1,9 @@
 import NavBar from "../../components/NavBar/NavBar";
 
 import { StCreateDesk } from "./RegisterStyle";
-import { useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { postSignUp } from "../../services/api";
+import { getIsValidId, postSignUp } from "../../services/api";
 import { queryClient } from "../../routes/Router";
 import { useNavigate } from "react-router-dom";
 
@@ -16,21 +16,22 @@ const initialInput = {
 };
 
 const idRegExp = /^[a-z0-9]{4,10}$/; // 소문자와 숫자만, 4-10자,
-const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{4,15}/; // 4-15자
+const passwordRegExp = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,15}/;
 const nameRegExp = /^[가-힣a-zA-Z0-9]{1,20}$/; //글자수 1-20자 한글, 영어, 숫자만 가능.
 const emailRegExp = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
 
 const Register = () => {
   const navigate = useNavigate();
   const [input, setInput] = useState(initialInput);
-
+  const [userId, setUserId] = useState("");
   const [wrongPassword, setWrongPassword] = useState(true);
   const [noMatchPassword, setNoMatchPassword] = useState(false);
   const [wrongId, setWrongId] = useState(true);
   const [wrongName, setWrongName] = useState(true);
   const [wrongEmail, setWrongEmail] = useState(true);
-
+  const [isValidId, setIsValidId] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [checkingId, setCheckingId] = useState(false);
 
   const mutateSignup = useMutation({
     mutationFn: postSignUp,
@@ -44,7 +45,36 @@ const Register = () => {
       window.location.reload(); // 새로고침
     },
   });
+  //
+  const debounce = (callback, wait) => {
+    let timeout;
+    return (...args) => {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => callback.apply(context, args), wait);
+    };
+  };
 
+  const debounceCheckId = useMemo(
+    () =>
+      debounce(async (id) => {
+        if (!idRegExp.test(id)) {
+          setCheckingId(false);
+          return;
+        }
+
+        setCheckingId(true);
+        const isValid = await getIsValidId(id);
+        setIsValidId(isValid);
+        setCheckingId(false);
+      }, 3000),
+    [setCheckingId, getIsValidId, setIsValidId]
+  );
+
+  useEffect(() => {
+    if (!wrongId && userId) debounceCheckId(userId);
+  }, [userId, wrongId]);
+  //
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setInput({
@@ -53,8 +83,14 @@ const Register = () => {
     });
     switch (name) {
       case "userId":
+        setIsValidId(false);
+        setCheckingId(true);
         setWrongId(!idRegExp.test(value));
+        setUserId(value);
+        // setWrongId(!idRegExp.test(value));
+        // if (!wrongId) debounceCheckId(value);
         break;
+
       case "userPassword":
         setWrongPassword(!passwordRegExp.test(value));
         break;
@@ -104,7 +140,7 @@ const Register = () => {
       input.email
     ) {
       setLoading(true);
-      mutateSignup({
+      mutateSignup.mutate({
         userId: input.userId,
         userPassword: input.userPassword,
         name: input.name,
@@ -128,8 +164,12 @@ const Register = () => {
             아이디
             <span>
               {wrongId
-                ? ` ⛔️ 아이디는 4~15자의 영문 소문자, 숫자만 사용 가능합니다. (ex:aaaaa)`
-                : " ✅ 통과!"}
+                ? ` ⛔️ 아이디는 4~10자의 영문 소문자, 숫자만 사용 가능합니다. (ex:aaaaa)`
+                : checkingId
+                ? " ⏳ 중복 확인중..."
+                : isValidId
+                ? " ✅ 사용 가능한 아이디 입니다."
+                : " ⛔️ 이미 사용중인 아이디 입니다."}
             </span>
             <br />
             <input
@@ -160,7 +200,7 @@ const Register = () => {
           <label>
             비밀번호 확인{" "}
             <span>
-              {input.verifyPassword &&
+              {!wrongPassword &&
                 (input.verifyPassword !== input.userPassword
                   ? " ⛔️ 비밀번호가 일치하지 않습니다."
                   : " ✅ 통과!")}

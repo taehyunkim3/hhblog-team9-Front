@@ -49,6 +49,9 @@ export const StDeskDetailBody = styled.div`
     font-size: 2rem;
     margin: 3rem;
     position: absolute;
+    @media (max-width: 768px) {
+      margin: 0;
+    }
   }
   .right {
     right: 0;
